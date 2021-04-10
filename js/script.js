@@ -10,7 +10,7 @@ window.addEventListener('DOMContentLoaded', () => {
         tabsContent.forEach((item) => {
             item.classList.add('hide');
             item.classList.remove('show');
-        })  
+        })
 
         tabs.forEach((item) => {
             item.classList.remove('tabheader__item_active');
@@ -47,10 +47,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
     function getTimeRemaining(endtime) {
         const t = Date.parse(endtime) - Date.parse(new Date()),
-            days = Math.floor( (t/(1000*60*60*24)) ),
-            seconds = Math.floor( (t/1000) % 60 ),
-            minutes = Math.floor( (t/1000/60) % 60 ),
-            hours = Math.floor( (t/(1000*60*60) % 24) );
+            days = Math.floor((t / (1000 * 60 * 60 * 24))),
+            seconds = Math.floor((t / 1000) % 60),
+            minutes = Math.floor((t / 1000 / 60) % 60),
+            hours = Math.floor((t / (1000 * 60 * 60) % 24));
 
         return {
             'total': t,
@@ -61,8 +61,8 @@ window.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    function getZero(num){
-        if (num >= 0 && num < 10) { 
+    function getZero(num) {
+        if (num >= 0 && num < 10) {
             return '0' + num;
         } else {
             return num;
@@ -100,7 +100,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
         
-        const modalTrigger = document.querySelectorAll('[data-modal]'),
+    const modalTrigger = document.querySelectorAll('[data-modal]'),
         modal = document.querySelector('.modal'),
         modalCloseBtn = document.querySelector('[data-close]');
 
@@ -130,7 +130,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     document.addEventListener('keydown', (e) => {
-        if (e.code === "Escape" && modal.classList.contains('show')) { 
+        if (e.code === "Escape" && modal.classList.contains('show')) {
             closeModal();
         }
     });
@@ -155,11 +155,11 @@ window.addEventListener('DOMContentLoaded', () => {
             this.classes = classes;
             this.parent = document.querySelector(parentSelector);
             this.transfer = 27;
-            this.changeToUAH(); 
+            this.changeToUAH();
         }
 
         changeToUAH() {
-            this.price = this.price * this.transfer; 
+            this.price = this.price * this.transfer;
         }
 
         render() {
@@ -255,14 +255,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
             postData(' http://localhost:3000/requests', json)
                 .then(data => {
-                console.log(data);
-                showThanksModal(message.success);
-                statusMessage.remove();
-            }).catch(() => {
-                showThanksModal(message.failure);
-            }).finally(() => {
-                form.reset();
-            });
+                    console.log(data);
+                    showThanksModal(message.success);
+                    statusMessage.remove();
+                }).catch(() => {
+                    showThanksModal(message.failure);
+                }).finally(() => {
+                    form.reset();
+                });
         });
     }
 
@@ -297,18 +297,18 @@ window.addEventListener('DOMContentLoaded', () => {
         slider = document.querySelector('.offer__slider'),
         next = document.querySelector('.offer__slider-next'),
         prev = document.querySelector('.offer__slider-prev'),
-        total = document.querySelector('#total'), 
+        total = document.querySelector('#total'),
         slidesWrapper = document.querySelector('.offer__slider-wrapper'),
         slidesField = document.querySelector('.offer__slider-inner'),
         width = window.getComputedStyle(slidesWrapper).width;
     
     
-    let   slideIndex = 1,
-          dots = [],
-          offSet = 0;
+    let slideIndex = 1,
+        dots = [],
+        offSet = 0;
 
 
-        // Второй варинат Слайдера (сложный)
+    // Второй варинат Слайдера (сложный)
     
     slidesWrapper.style.overflow = 'hidden';
     
@@ -347,16 +347,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
     function showIndex() {
         if (slideIndex < 10) {
-                    currentNumber.innerHTML = `0${slideIndex}`;
-                } else {
-                    currentNumber.innerHTML = `${slideIndex}`;
-                }
+            currentNumber.innerHTML = `0${slideIndex}`;
+        } else {
+            currentNumber.innerHTML = `${slideIndex}`;
+        }
     };
     
     next.addEventListener('click', () => {
         if (offSet == +width.slice(0, width.length - 2) * (slides.length - 1)) {
             offSet = 0;
-        } else { 
+        } else {
             offSet = offSet + (+width.slice(0, width.length - 2));
         }
         console.log('Next ' + offSet);
@@ -394,7 +394,7 @@ window.addEventListener('DOMContentLoaded', () => {
         dots[slideIndex - 1].style.opacity = '1';
     }
 
-     // Слайдер 1-й вариант (не сложный)
+    // Слайдер 1-й вариант (не сложный)
     // showSlides(1);
    
     if (slides.lenght < 10) {
@@ -441,9 +441,86 @@ window.addEventListener('DOMContentLoaded', () => {
     //     plusSlides(1);
     // });
 
+    // Calculator 
+
+    const result = document.querySelector('.calculating__result span'),
+        sexParent = document.querySelector('#gender'),
+        ratioParent = document.querySelector('.calculating__choose_big');
+    
+    let sex, height, weight, ratio, age;
+
+    calcTotal();
+
+    getStaticInfo('#gender', 'calculating__choose-item_active');
+    getStaticInfo('.calculating__choose_big', 'calculating__choose-item_active');
+    getDynamicInfo('#height');
+    getDynamicInfo('#weight');
+    getDynamicInfo('#age');
+
+    function calcTotal() {
+        if (!sex || !height || !weight || !ratio || !age) {
+            result.textContent = `____`;
+            console.log('error');
+            return;
+        }
+
+        if (sex === 'female') {
+            result.textContent = Math.round((447.6 + (9.2 * weight) + (3.1 * height) - (4.3 * age)) * ratio);
+        } else {
+            result.textContent = Math.round((88.36 + (13.4 * weight) + (4.8 * height) - (5.7 * age)) * ratio);
+        }
+    }
 
 
 
 
+    function getStaticInfo(parentSelector, activeClass) {
+        let elements = document.querySelectorAll(`${parentSelector} div`);
+
+        elements.forEach(elem => {
+            elem.addEventListener('click', (e) => {
+                if (e.target.getAttribute('data-ratio')) {
+                    ratio = +e.target.getAttribute('data-ratio');
+                    
+                } else {
+                    sex = e.target.getAttribute('id');
+                }
+    
+                console.log(ratio, sex);
+                console.log(elements)
+    
+                elements.forEach(elem => {
+                    elem.classList.remove(activeClass);
+                });
+    
+                e.target.classList.add(activeClass);
+                calcTotal();
+            })
+        })
+    }
+
+    function getDynamicInfo(selector) {
+        const input = document.querySelector(selector);
+
+        input.addEventListener('input', () => {
+            console.log('here')
+            switch (input.getAttribute('id')) {
+                case 'height':
+                    height = +input.value;
+                    console.log(height);
+                    break;
+                case 'weight':
+                    weight = +input.value;
+                    console.log(weight);
+                    break;
+                case 'age':
+                    age = +input.value;
+                    console.log(age);
+                    break;
+            }
+            calcTotal();
+        });
+
+    }
 
 });
